@@ -1,0 +1,70 @@
+body {
+  background-color: black;
+}
+
+.snowflakes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+  
+.snowflake {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  animation: snowfall linear infinite;
+}
+  
+  @keyframes snowfall {
+    to {
+        transform: translateY(100vh);
+    }
+  }
+  
+  .toggle-label {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .toggle-label input {
+    display: none;
+  }
+  
+  .slider-snow {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+  
+  .slider-snow:before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  
+.toggle-text {
+  margin-left: 5px;
+  user-select: none;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+}
+  
+input:checked + .slider-snow:before {
+  transform: translateX(20px);
+}
