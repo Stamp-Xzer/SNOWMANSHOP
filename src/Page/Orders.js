@@ -8,6 +8,10 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = () => {
     axios
       .get("https://localhost:7048/api/Orders")
       .then((response) => {
@@ -21,7 +25,42 @@ const Orders = () => {
           text: "Failed to fetch orders",
         });
       });
-  }, []);
+  };
+
+  const handleChangeStatus = (order) => {
+    const newStatus = order.orderStatus === "non-pay" ? "pay" : "non-pay";
+
+    const newupdateooder = {
+      orderID: order.orderID,
+      orderProductID: order.orderProductID,
+      orderPrice: order.orderPrice,
+      orderStatus: newStatus,
+      orderUsername: order.orderUsername,
+    };
+    console.log(newupdateooder);
+    axios
+      .put(`https://localhost:7048/api/Orders/${order.orderID}`, newupdateooder)
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Successful",
+          showConfirmButton: true,
+        }).then((result) => {
+          // Redirect to login page after success message
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error updating order status:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to update order status",
+        });
+      });
+  };
 
   return (
     <div
@@ -61,8 +100,24 @@ const Orders = () => {
                   <td className="border px-4 py-2">
                     {parseFloat(order.orderPrice).toFixed(2)} ฿
                   </td>
-                  <td className="border px-4 py-2">{order.orderStatus}</td>
+                  <td
+                    className={`border px-4 py-2 ${
+                      order.orderStatus === "non-pay"
+                        ? "text-red-600 font-semibold"
+                        : "text-green-600 font-semibold"
+                    }`}
+                  >
+                    {order.orderStatus}
+                  </td>
                   <td className="border px-4 py-2">{order.orderUsername}</td>
+                  <td className="border px-4 py-2">
+                    <button
+                      className="btn btn-warning my-1"
+                      onClick={() => handleChangeStatus(order)}
+                    >
+                      Change Status
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

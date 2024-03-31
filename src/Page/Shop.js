@@ -167,6 +167,7 @@ const Shop = () => {
       .then((response) => {
         console.log("Product deleted successfully:", response.data);
         // Remove the deleted product from the products state
+        console.log("AAA");
         setProducts(products.filter((p) => p.productID !== product.productID));
       })
       .catch((error) => {
